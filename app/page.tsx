@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { Suspense, useState, useEffect, useCallback, useRef } from "react";
 import { Chain, TokenPnL, Summary } from "@/lib/types";
+import { useShareUrl } from "@/hooks/use-share-url";
 
 // ─── Chain metadata ─────────────────────────────────────────────────────────
 
@@ -463,6 +464,14 @@ function TokenTable({ tokens }: { tokens: TokenPnL[] }) {
 // ─── Main Page ──────────────────────────────────────────────────────────────
 
 export default function Home() {
+  return (
+    <Suspense>
+      <HomeContent />
+    </Suspense>
+  );
+}
+
+function HomeContent() {
   const [address, setAddress] = useState("");
   const [chain, setChain] = useState<Chain>("ethereum");
   const [loading, setLoading] = useState(false);
@@ -474,6 +483,18 @@ export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
   // Captures address+chain at analyze-time so handleBootComplete is stable
   const pendingRef = useRef({ address: "", chain: "ethereum" as Chain });
+
+  const { updateUrl, clearUrl, copyShareUrl, copied } = useShareUrl({
+    onPrefill: (addr, c) => {
+      setAddress(addr);
+      setChain(c);
+      pendingRef.current = { address: addr, chain: c };
+      setError(null);
+      setTokens(null);
+      setSummary(null);
+      setBooting(true);
+    },
+  });
 
   // Live clock — UTC
   useEffect(() => {
@@ -503,11 +524,12 @@ export default function Home() {
 
     // Capture address+chain at submit time so the fetch callback stays stable
     pendingRef.current = { address: trimmed, chain };
+    clearUrl();
     setError(null);
     setTokens(null);
     setSummary(null);
     setBooting(true);
-  }, [address, chain]);
+  }, [address, chain, clearUrl]);
 
   // Stable callback — reads address/chain from ref, not state
   const handleBootComplete = useCallback(async () => {
@@ -527,12 +549,13 @@ export default function Home() {
       }
       setTokens(data.tokens ?? []);
       setSummary(data.summary ?? null);
+      updateUrl(addr, c);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Network error");
     } finally {
       setLoading(false);
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [updateUrl]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !loading && !booting) handleAnalyze();
@@ -693,6 +716,20 @@ export default function Home() {
         {/* ── Results ── */}
         {!isLoading && summary && tokens && (
           <div className="animate-fade-in">
+            <div className="flex items-center justify-end mb-3">
+              <button
+                className="text-xs uppercase tracking-widest px-3 py-1.5 rounded-sm"
+                style={{
+                  background: "var(--accent-dim)",
+                  border: "1px solid var(--accent-border)",
+                  color: "var(--accent)",
+                  cursor: "pointer",
+                }}
+                onClick={copyShareUrl}
+              >
+                {copied ? "COPIED!" : "SHARE ↗"}
+              </button>
+            </div>
             <SummaryCards summary={summary} />
             <TokenTable tokens={tokens} />
           </div>
