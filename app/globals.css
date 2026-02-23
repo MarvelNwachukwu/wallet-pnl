@@ -1,0 +1,314 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Design tokens ─── */
+:root {
+  --bg-base:         #07080F;
+  --bg-surface:      #0C0F1C;
+  --bg-elevated:     #101427;
+  --bg-hover:        #161A2C;
+  --accent:          #FFB800;
+  --accent-dim:      rgba(255,184,0,0.12);
+  --accent-border:   rgba(255,184,0,0.38);
+  --accent-glow:     rgba(255,184,0,0.08);
+  --profit:          #00D68F;
+  --profit-dim:      rgba(0,214,143,0.10);
+  --profit-border:   rgba(0,214,143,0.38);
+  --loss:            #FF3B5C;
+  --loss-dim:        rgba(255,59,92,0.10);
+  --loss-border:     rgba(255,59,92,0.38);
+  --txt-primary:     #E8EAF4;
+  --txt-secondary:   #8A93B8;  /* was #6B7095 — lifted for readable labels */
+  --txt-muted:       #60687F;  /* was #353850 — was near-invisible, now ~5:1 */
+  --border:          rgba(255,255,255,0.08);
+  --border-bright:   rgba(255,255,255,0.17);
+}
+
+/* ─── Reset ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { color-scheme: dark; }
+
+body {
+  font-family: var(--font-mono), "JetBrains Mono", "Courier New", monospace;
+  background-color: var(--bg-base);
+  color: var(--txt-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  /* subtle scanlines */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.04) 3px,
+      rgba(0,0,0,0.04) 4px
+    );
+}
+
+/* Ambient grid */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,184,0,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,184,0,0.018) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--txt-muted); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--txt-secondary); }
+
+/* ─── Utilities ─── */
+.terminal-text { font-family: var(--font-mono), monospace; }
+
+.glow-amber {
+  text-shadow:
+    0 0 20px rgba(255,184,0,0.5),
+    0 0 40px rgba(255,184,0,0.2);
+}
+
+.glow-green {
+  text-shadow:
+    0 0 16px rgba(0,214,143,0.6),
+    0 0 32px rgba(0,214,143,0.2);
+}
+
+.glow-red {
+  text-shadow:
+    0 0 16px rgba(255,59,92,0.6),
+    0 0 32px rgba(255,59,92,0.2);
+}
+
+/* ─── Input ─── */
+.terminal-input {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-bright);
+  color: var(--txt-primary);
+  font-family: var(--font-mono), monospace;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  caret-color: var(--accent);
+}
+
+.terminal-input:focus {
+  outline: none;
+  border-color: var(--accent-border);
+  background: var(--bg-elevated);
+  box-shadow:
+    0 0 0 1px var(--accent-border),
+    0 0 20px var(--accent-glow),
+    inset 0 0 20px rgba(255,184,0,0.02);
+}
+
+.terminal-input::placeholder { color: var(--txt-muted); }
+
+/* ─── Skeleton shimmer ─── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface) 0%,
+    var(--bg-elevated) 50%,
+    var(--bg-surface) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 1.8s linear infinite;
+  border-radius: 4px;
+}
+
+/* ─── Table rows ─── */
+.token-row {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+.token-row:hover { background: var(--bg-hover); }
+.token-row:last-child { border-bottom: none; }
+
+/* ─── Card surface ─── */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--border-bright);
+}
+
+/* ─── Chain select ─── */
+.chain-select-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.chain-select-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+  font-size: 0.65rem;
+  color: var(--txt-secondary);
+  transition: color 0.15s;
+}
+
+.chain-select {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  padding: 6px 32px 6px 12px;
+  border: 1px solid var(--border-bright);
+  background: var(--bg-surface);
+  color: var(--txt-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  text-transform: uppercase;
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 180px;
+}
+
+.chain-select:hover:not(:disabled) {
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.chain-select:focus {
+  outline: none;
+  border-color: var(--accent-border);
+  color: var(--accent);
+  background: var(--bg-elevated);
+  box-shadow: 0 0 0 1px var(--accent-border), 0 0 16px var(--accent-glow);
+}
+
+.chain-select:focus + .chain-select-wrap::after,
+.chain-select-wrap:has(.chain-select:focus)::after {
+  color: var(--accent);
+}
+
+.chain-select:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.chain-select option {
+  background: #0C0F1C;
+  color: var(--txt-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ─── Analyze button ─── */
+.btn-analyze {
+  background: var(--accent);
+  color: #07080F;
+  font-family: var(--font-mono), monospace;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+  padding: 0 28px;
+}
+
+.btn-analyze:hover:not(:disabled) {
+  opacity: 0.92;
+  box-shadow: 0 0 24px rgba(255,184,0,0.35);
+}
+
+.btn-analyze:active:not(:disabled) { transform: scale(0.98); }
+
+.btn-analyze:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ─── Terminal boot lines ─── */
+.boot-line {
+  opacity: 0;
+  animation: fade-in 0.15s ease-out forwards;
+}
+
+/* ─── Sort arrow ─── */
+.sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--txt-secondary);
+  font-family: var(--font-mono), monospace;
+  font-size: inherit;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: color 0.12s;
+  padding: 0;
+}
+
+.sort-btn:hover { color: var(--txt-primary); }
+.sort-btn.active { color: var(--accent); }
+
+/* ─── Status dot ─── */
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--profit);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+/* ─── Profit / Loss ─── */
+.txt-profit { color: var(--profit); }
+.txt-loss   { color: var(--loss); }
+.txt-neutral{ color: var(--txt-secondary); }
+
+.badge-profit {
+  background: var(--profit-dim);
+  border: 1px solid var(--profit-border);
+  color: var(--profit);
+}
+.badge-loss {
+  background: var(--loss-dim);
+  border: 1px solid var(--loss-border);
+  color: var(--loss);
+}
+.badge-neutral {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-bright);
+  color: var(--txt-secondary);
+}
+
+@keyframes shimmer {
+  0%   { background-position: -1000px 0; }
+  100% { background-position:  1000px 0; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(0,214,143,0.6); }
+  50%       { opacity: 0.4; box-shadow: none; }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
