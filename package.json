@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "author": "Marvel <marvel.codecraft@gmail.com> (https://github.com/MarvelNwachukwu)",
-  "repository": "github.com/MarvelNwachukwu/Recon",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarvelNwachukwu/Recon.git"
+  },
   "homepage": "https://recon.marvellousnwachukwu.com",
   "scripts": {
     "dev": "next dev",
