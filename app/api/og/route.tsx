@@ -6,10 +6,10 @@ const SIZE = { width: 1200, height: 630 };
 
 const VALID_CHAINS = [
   "ethereum", "arbitrum", "base", "optimism",
-  "polygon", "bnb", "linea", "scroll", "blast",
+  "polygon", "linea", "scroll", "blast",
 ];
 
-const CHAINS = ["ETH", "ARB", "BASE", "OP", "MATIC", "BNB", "LINEA", "SCROLL", "BLAST"];
+const CHAINS = ["ETH", "ARB", "BASE", "OP", "MATIC", "LINEA", "SCROLL", "BLAST"];
 
 const DEFAULT_STATS = [
   { label: "PORTFOLIO VALUE", value: "$124,582", color: "#FFB800" },
@@ -24,7 +24,6 @@ const CHAIN_HEADERS: Record<string, string> = {
   base:     "BASE",
   optimism: "OPTIMISM",
   polygon:  "POLYGON",
-  bnb:      "BNB CHAIN",
   linea:    "LINEA",
   scroll:   "SCROLL",
   blast:    "BLAST",
@@ -144,7 +143,7 @@ export async function GET(request: Request) {
             letterSpacing: "0.18em",
             marginBottom: 40,
           }}>
-            EVM TOKEN-BY-TOKEN BREAKDOWN · FIFO COST BASIS · 9 CHAINS
+            EVM TOKEN-BY-TOKEN BREAKDOWN · FIFO COST BASIS · 8 CHAINS
           </div>
 
           {/* Stat cards */}

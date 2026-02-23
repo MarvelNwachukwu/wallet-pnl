@@ -6,7 +6,6 @@ const CHAIN_PREFIX: Record<Chain, string> = {
   base:     "base",
   optimism: "optimism",
   polygon:  "polygon",
-  bnb:      "bsc",
   linea:    "linea",
   scroll:   "scroll",
   blast:    "blast",

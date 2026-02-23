@@ -12,7 +12,6 @@ const CHAIN_OPTIONS: { value: Chain; label: string; header: string }[] = [
   { value: "base",     label: "◆ Base",             header: "BASE"        },
   { value: "optimism", label: "◆ Optimism",         header: "OPTIMISM"    },
   { value: "polygon",  label: "◆ Polygon",          header: "POLYGON"     },
-  { value: "bnb",      label: "◆ BNB Chain",        header: "BNB CHAIN"   },
   { value: "linea",    label: "◆ Linea",            header: "LINEA"       },
   { value: "scroll",   label: "◆ Scroll",           header: "SCROLL"      },
   { value: "blast",    label: "◆ Blast",            header: "BLAST"       },

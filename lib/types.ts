@@ -4,7 +4,6 @@ export type Chain =
   | "base"
   | "optimism"
   | "polygon"
-  | "bnb"
   | "linea"
   | "scroll"
   | "blast";
@@ -120,16 +119,6 @@ export const STABLECOINS: Record<Chain, Record<string, number>> = {
     "0x45c32fa6df82ead1e2ef74d17b76547eddfaff89": 1, // FRAX
     "0x9c9e5fd8bbc25984b178fdce6117defa39d2db39": 1, // BUSD
   },
-  bnb: {
-    "0x55d398326f99059ff775485246999027b3197955": 1, // BSC-USD (Binance-pegged USDT)
-    "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d": 1, // USDC
-    "0xe9e7cea3dedca5984780bafc599bd69add087d56": 1, // BUSD (Binance-USD)
-    "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3": 1, // DAI
-    "0x90c97f71e18723b0cf0dfa30ee176ab653e89f40": 1, // FRAX
-    "0xd17479997f34dd9156deef8d974a1c2b23bfff4f": 1, // USDD
-    "0x14016e85a25aeb13065688cafb43044c2ef86784": 1, // TUSD
-    "0xb3c11196a4f3b1da7c23d9fb0a3dde9c6340934f": 1, // ZUSD
-  },
   linea: {
     "0x176211869ca2b568f2a7d4ee941e073a821ee1ff": 1, // USDC
     "0xa219439258ca9da29e9cc4ce5596924745e12b93": 1, // USDT
@@ -153,7 +142,6 @@ export const WETH: Record<Chain, string> = {
   base:     "0x4200000000000000000000000000000000000006", // WETH
   optimism: "0x4200000000000000000000000000000000000006", // WETH
   polygon:  "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", // WMATIC
-  bnb:      "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", // WBNB
   linea:    "0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34", // WETH
   scroll:   "0x5300000000000000000000000000000000000004", // WETH
   blast:    "0x4300000000000000000000000000000000000004", // WETH

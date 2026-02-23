@@ -10,7 +10,6 @@ export const CHAIN_IDS: Record<Chain, number> = {
   base:     8453,
   optimism: 10,
   polygon:  137,
-  bnb:      56,
   linea:    59144,
   scroll:   534352,
   blast:    81457,

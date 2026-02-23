@@ -18,7 +18,7 @@ export async function generateMetadata({
   }
 
   const short = formatAddress(address);
-  const description = `EVM wallet PnL for ${short} on ${chain}. Token-by-token FIFO cost basis across 9 EVM chains.`;
+  const description = `EVM wallet PnL for ${short} on ${chain}. Token-by-token FIFO cost basis across 8 EVM chains.`;
 
   return {
     title: `${short} // Recon`,

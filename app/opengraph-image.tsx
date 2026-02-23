@@ -11,7 +11,7 @@ const STATS = [
   { label: "REALIZED PNL",    value: "+$18,220", color: "#00D68F" },
 ];
 
-const CHAINS = ["ETH", "ARB", "BASE", "OP", "MATIC", "BNB", "LINEA", "SCROLL", "BLAST"];
+const CHAINS = ["ETH", "ARB", "BASE", "OP", "MATIC", "LINEA", "SCROLL", "BLAST"];
 
 export default function Image() {
   return new ImageResponse(
@@ -67,7 +67,7 @@ export default function Image() {
 
           {/* Subtitle */}
           <div style={{ color: "#60687F", fontSize: 15, letterSpacing: 3, marginBottom: 40 }}>
-            EVM TOKEN-BY-TOKEN BREAKDOWN · FIFO COST BASIS · 9 CHAINS
+            EVM TOKEN-BY-TOKEN BREAKDOWN · FIFO COST BASIS · 8 CHAINS
           </div>
 
           {/* Stat cards */}

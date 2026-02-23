@@ -11,7 +11,6 @@ const PLATFORM: Record<Chain, string> = {
   base:     "base",
   optimism: "optimistic-ethereum",
   polygon:  "polygon-pos",
-  bnb:      "binance-smart-chain",
   linea:    "linea",
   scroll:   "scroll",
   blast:    "blast",

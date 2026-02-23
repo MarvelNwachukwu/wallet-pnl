@@ -6,7 +6,7 @@ import type { Chain } from "@/lib/types";
 
 const VALID_CHAINS: Chain[] = [
   "ethereum", "arbitrum", "base", "optimism",
-  "polygon", "bnb", "linea", "scroll", "blast",
+  "polygon", "linea", "scroll", "blast",
 ];
 
 const ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/;
