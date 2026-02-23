@@ -4,7 +4,6 @@ import { fetchTokenPrices } from "@/lib/coingecko";
 import { fetchAllPriceHistories } from "@/lib/defillama";
 import { calculatePnL, scanNonZeroContracts } from "@/lib/pnl";
 import { Chain, STABLECOINS, WETH } from "@/lib/types";
-import { getCacheStats } from "@/lib/price-cache";
 
 export const maxDuration = 60;
 
@@ -28,12 +27,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid chain" }, { status: 400 });
     }
 
-    console.log(`\n[wallet] ── START address=${address} chain=${chain}`);
-    console.log(`[wallet] cache before: ${JSON.stringify(getCacheStats())}`);
-
     // ── 1. Fetch token transfers ───────────────────────────────────────────
     const transfers = await fetchTokenTransfers(address, chain);
-    console.log(`[wallet] transfers: ${transfers.length}`);
 
     if (transfers.length === 0) {
       return NextResponse.json({
@@ -55,11 +50,6 @@ export async function POST(req: NextRequest) {
     // but we only need CoinGecko prices for held ones + WETH for ETH inference.
     const priceTargets = allContracts.filter((c) => heldContracts.has(c));
 
-    console.log(
-      `[wallet] contracts total=${allContracts.length} held=${heldContracts.size} ` +
-      `price-targets=${priceTargets.length}`
-    );
-
     // ── 3+4. Compute targets, then fetch CoinGecko + DeFiLlama in parallel ──
     const timestamps = transfers.map((t) => parseInt(t.timeStamp)).filter(Boolean);
     const minTs = Math.min(...timestamps);
@@ -72,19 +62,12 @@ export async function POST(req: NextRequest) {
       (c) => stables[c] === undefined && c !== wethAddr
     );
 
-    console.log(`[wallet] fetching prices (${priceTargets.length} targets) + DeFiLlama history (${historyTargets.length} tokens) in parallel`);
-
     const [prices, llamaHistories] = await Promise.all([
       fetchTokenPrices(priceTargets, chain),
       fetchAllPriceHistories(historyTargets, chain, minTs, maxTs),
     ]);
-    console.log(`[wallet] prices=${Object.keys(prices).length} llama=${Object.keys(llamaHistories).length}`);
-
     // ── 5. Calculate FIFO PnL ─────────────────────────────────────────────
     const result = calculatePnL(transfers, address, prices, chain, llamaHistories);
-    console.log(`[wallet] tokens out: ${result.tokens.length} | summary: ${JSON.stringify(result.summary)}`);
-    console.log(`[wallet] cache after: ${JSON.stringify(getCacheStats())}`);
-    console.log(`[wallet] ── END\n`);
 
     return NextResponse.json(result);
   } catch (err) {

@@ -3,7 +3,6 @@ import {
   partitionAddresses,
   setCachedPrice,
   markNoFeed,
-  getCacheStats,
 } from "./price-cache";
 
 const PLATFORM: Record<Chain, string> = {
@@ -39,27 +38,16 @@ async function cgGet(url: string): Promise<unknown> {
     ...(CG_KEY ? { "x-cg-demo-apikey": CG_KEY } : {}),
   };
 
-  const safeUrl = CG_KEY
-    ? url.replace(CG_KEY, `${CG_KEY.slice(0, 8)}…`)
-    : url;
-  console.log(`[cg] GET ${safeUrl.slice(0, 140)}`);
-
   const res = await fetch(url, { signal: AbortSignal.timeout(15_000), headers, next: { revalidate: 0 } });
-  console.log(`[cg] → ${res.status}`);
 
   if (res.status === 429) {
-    console.log(`[cg] rate-limited, retrying in 5s`);
     await sleep(5000);
     const r2 = await fetch(url, { signal: AbortSignal.timeout(15_000), headers, next: { revalidate: 0 } });
-    if (!r2.ok) { console.log(`[cg] retry failed ${r2.status}`); return null; }
+    if (!r2.ok) return null;
     return r2.json();
   }
 
-  if (!res.ok) {
-    const body = await res.text();
-    console.log(`[cg] error: ${body.slice(0, 200)}`);
-    return null;
-  }
+  if (!res.ok) return null;
 
   return res.json();
 }
@@ -81,18 +69,9 @@ export async function fetchTokenPrices(
 
   const { cached, toFetch, skipped } = partitionAddresses(contractAddresses);
 
-  console.log(
-    `[cg] cache stats: ${JSON.stringify(getCacheStats())} | ` +
-    `in=${contractAddresses.length} cached=${Object.keys(cached).length} ` +
-    `toFetch=${toFetch.length} skipped(no-feed)=${skipped.length}`
-  );
-
   const prices: Record<string, number> = { ...cached };
 
-  if (toFetch.length === 0) {
-    console.log(`[cg] all resolved from cache — no API call needed`);
-    return prices;
-  }
+  if (toFetch.length === 0) return prices;
 
   const platform = PLATFORM[chain];
 
@@ -127,15 +106,13 @@ export async function fetchTokenPrices(
           }
         }
 
-        console.log(`[cg] chunk ${Math.floor(i / CHUNK) + 1}: ${hits}/${chunk.length} hits`);
       }
-    } catch (e) {
-      console.log(`[cg] chunk threw: ${e}`);
+    } catch {
+      // chunk failed — continue with remaining chunks
     }
 
     if (i + CHUNK < toFetch.length) await sleep(500);
   }
 
-  console.log(`[cg] final: ${Object.keys(prices).length} prices total`);
   return prices;
 }

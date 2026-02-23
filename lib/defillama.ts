@@ -78,8 +78,7 @@ export async function fetchPriceHistory(
     const prices: PricePoint[] = coinData.prices;
     setCached(cacheKey, prices);
     return prices;
-  } catch (e) {
-    console.log(`[llama] ${coin}: ${e}`);
+  } catch {
     return [];
   }
 }
@@ -143,6 +142,5 @@ export async function fetchAllPriceHistories(
     if (history.length > 0) map[contract] = history;
   }
 
-  console.log(`[llama] history resolved: ${Object.keys(map).length}/${contracts.length} tokens`);
   return map;
 }

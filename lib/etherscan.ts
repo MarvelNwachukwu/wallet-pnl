@@ -91,8 +91,6 @@ export async function fetchTokenTransfers(
 
     const result = typeof data.result === "string" ? data.result : "";
     const msg: string = data.message ?? "";
-    console.log(`[etherscan] page=${page} status=${data.status} msg="${msg}"`);
-
     // Valid empty state
     if (msg === "No transactions found") break;
 
@@ -122,6 +120,5 @@ export async function fetchTokenTransfers(
     page++;
   }
 
-  console.log(`[etherscan] fetched ${allTransfers.length} transfers (${page} page${page > 1 ? "s" : ""})`);
   return allTransfers;
 }

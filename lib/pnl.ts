@@ -179,8 +179,6 @@ export function calculatePnL(
     byContract.set(contract, list);
   }
 
-  console.log(`[pnl] processing ${byContract.size} contracts`);
-
   const tokens: TokenPnL[] = [];
 
   for (const [contract, txs] of Array.from(byContract.entries())) {
@@ -330,8 +328,6 @@ export function calculatePnL(
   const profitableTokens = tokens.filter((t) => t.totalPnl > 0).length;
   const winRate =
     tokens.length > 0 ? (profitableTokens / tokens.length) * 100 : 0;
-
-  console.log(`[pnl] done: ${tokens.length} tokens | realized=$${realizedPnlTotal.toFixed(2)} unrealized=$${unrealizedPnlTotal.toFixed(2)}`);
 
   return {
     tokens,

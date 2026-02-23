@@ -15,6 +15,14 @@ export const viewport: Viewport = {
   themeColor: "#FFB800",
 };
 
+const OG_IMAGE = {
+  url: `${APP_URL}/opengraph-image`,
+  width: 1200,
+  height: 630,
+  alt: "Recon — EVM Wallet PnL Terminal",
+  type: "image/png",
+}
+
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
 
@@ -54,6 +62,7 @@ export const metadata: Metadata = {
     description:
       "Token-by-token PnL breakdown with FIFO cost basis across 9 EVM chains. Enter any wallet address and see unrealized + realized gains instantly.",
     locale: "en_US",
+    images: [ OG_IMAGE ],
   },
 
   twitter: {
@@ -63,7 +72,10 @@ export const metadata: Metadata = {
     title: "Recon — EVM Wallet PnL Terminal",
     description:
       "Token-by-token PnL breakdown with FIFO cost basis across 9 EVM chains.",
+    images: [ OG_IMAGE ],
   },
+
+  images: [ OG_IMAGE ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
