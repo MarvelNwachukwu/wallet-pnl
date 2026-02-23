@@ -9,12 +9,7 @@ const mono = JetBrains_Mono({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-// Use deployment URL so og:image points to the same origin (fixes missing OG image when sharing Vercel URL)
-const APP_URL =
-  process.env.NEXT_PUBLIC_APP_URL ??
-  (typeof process.env.VERCEL_URL === "string"
-    ? `https://${process.env.VERCEL_URL}`
-    : "https://recon.marvellousnwachukwu.com");
+const APP_URL = "https://recon.marvellousnwachukwu.com";
 
 export const viewport: Viewport = {
   themeColor: "#FFB800",
@@ -59,14 +54,6 @@ export const metadata: Metadata = {
     description:
       "Token-by-token PnL breakdown with FIFO cost basis across 9 EVM chains. Enter any wallet address and see unrealized + realized gains instantly.",
     locale: "en_US",
-    images: [
-      {
-        url: "/api/og",
-        width: 1200,
-        height: 630,
-        alt: "Recon — EVM wallet PnL terminal",
-      },
-    ],
   },
 
   twitter: {
@@ -76,7 +63,6 @@ export const metadata: Metadata = {
     title: "Recon — EVM Wallet PnL Terminal",
     description:
       "Token-by-token PnL breakdown with FIFO cost basis across 9 EVM chains.",
-    images: ["/api/og"],
   },
 };
 
