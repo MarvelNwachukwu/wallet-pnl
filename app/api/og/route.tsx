@@ -1,20 +1,19 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Recon — EVM wallet PnL terminal";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+
+const SIZE = { width: 1200, height: 630 };
 
 const STATS = [
-  { label: "PORTFOLIO VALUE", value: "$124,582", color: "#FFB800"  },
-  { label: "TOTAL PNL",       value: "+$23,451", color: "#00D68F"  },
-  { label: "WIN RATE",        value: "68.4%",    color: "#00D68F"  },
-  { label: "REALIZED PNL",    value: "+$18,220", color: "#00D68F"  },
+  { label: "PORTFOLIO VALUE", value: "$124,582", color: "#FFB800" },
+  { label: "TOTAL PNL", value: "+$23,451", color: "#00D68F" },
+  { label: "WIN RATE", value: "68.4%", color: "#00D68F" },
+  { label: "REALIZED PNL", value: "+$18,220", color: "#00D68F" },
 ];
 
 const CHAINS = ["ETH", "ARB", "BASE", "OP", "MATIC", "BNB", "LINEA", "SCROLL", "BLAST"];
 
-export default function Image() {
+export async function GET() {
   return new ImageResponse(
     (
       <div
@@ -28,10 +27,7 @@ export default function Image() {
           overflow: "hidden",
         }}
       >
-        {/* ── Top amber accent bar ── */}
         <div style={{ height: 4, width: "100%", background: "#FFB800", opacity: 0.85 }} />
-
-        {/* ── Main content ── */}
         <div
           style={{
             display: "flex",
@@ -40,7 +36,6 @@ export default function Image() {
             padding: "52px 68px 44px 68px",
           }}
         >
-          {/* ── Header row ── */}
           <div style={{ display: "flex", alignItems: "center", marginBottom: 52 }}>
             <span style={{ color: "#FFB800", fontSize: 18, fontWeight: 700, letterSpacing: "0.22em" }}>
               RECON
@@ -60,12 +55,9 @@ export default function Image() {
               TERMINAL
             </div>
             <div style={{ flex: 1 }} />
-            {/* Live indicator */}
             <div style={{ width: 8, height: 8, borderRadius: 4, background: "#00D68F", marginRight: 9 }} />
             <span style={{ color: "#8A93B8", fontSize: 13, letterSpacing: "0.16em" }}>LIVE</span>
           </div>
-
-          {/* ── Giant title ── */}
           <div style={{ display: "flex", alignItems: "baseline", marginBottom: 18 }}>
             <span
               style={{
@@ -79,8 +71,6 @@ export default function Image() {
               RECON
             </span>
           </div>
-
-          {/* ── Subtitle ── */}
           <div
             style={{
               color: "#60687F",
@@ -91,8 +81,6 @@ export default function Image() {
           >
             EVM TOKEN-BY-TOKEN BREAKDOWN · FIFO COST BASIS · 9 CHAINS
           </div>
-
-          {/* ── Stat cards ── */}
           <div style={{ display: "flex", gap: 14, marginBottom: 24 }}>
             {STATS.map(({ label, value, color }) => (
               <div
@@ -124,8 +112,6 @@ export default function Image() {
               </div>
             ))}
           </div>
-
-          {/* ── Chain badges ── */}
           <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
             {CHAINS.map((chain) => (
               <div
@@ -145,11 +131,15 @@ export default function Image() {
             ))}
           </div>
         </div>
-
-        {/* ── Bottom amber gradient bar ── */}
         <div style={{ height: 2, width: "40%", background: "#FFB800", opacity: 0.3 }} />
       </div>
     ),
-    size
+    {
+      ...SIZE,
+      headers: {
+        "Cache-Control": "public, max-age=86400, s-maxage=86400",
+        "Content-Type": "image/png",
+      },
+    }
   );
 }

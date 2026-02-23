@@ -85,7 +85,7 @@ function PnlBadge({ value, percent }: { value: number; percent?: number }) {
 // ─── Boot Sequence ──────────────────────────────────────────────────────────
 
 const BOOT_LINES = [
-  "> INITIALIZING WALLET_PNL TERMINAL v2.4.1",
+  "> INITIALIZING RECON TERMINAL v2.4.1",
   "> LOADING ETHERSCAN MODULE... OK",
   "> LOADING COINGECKO PRICE FEED... OK",
   "> FIFO ENGINE READY",
@@ -557,7 +557,7 @@ export default function Home() {
             className="text-sm font-bold tracking-widest glow-amber"
             style={{ color: "var(--accent)", letterSpacing: "0.2em" }}
           >
-            WALLET_PNL
+            RECON
           </span>
           <span
             className="text-xs px-2 py-0.5 rounded-sm"
@@ -717,10 +717,15 @@ export default function Home() {
         {/* ── Footer ── */}
         <footer className="mt-12 pt-6 text-xs text-center" style={{ borderTop: "1px solid var(--border)", color: "var(--txt-muted)" }}>
           <p>
-            WALLET_PNL · Data via Etherscan & CoinGecko free tier ·{" "}
+            Recon · Data via Etherscan, CoinGecko and Defillama free tiers ·{" "}
             <span style={{ color: "var(--accent)", opacity: 0.6 }}>
               PnL values are estimates — not financial advice
             </span>
+          </p>
+          <p className="mt-6">
+            <a className="text-accent hover:underline" href="https://x.com/marvel_codes" target="_blank" rel="noopener noreferrer">Da developer</a>
+            {" · "}
+            <a className="text-accent hover:underline" href="https://github.com/MarvelNwachukwu/Recon" target="_blank" rel="noopener noreferrer">Source Code</a>
           </p>
         </footer>
       </main>

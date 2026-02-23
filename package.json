@@ -1,7 +1,10 @@
 {
-  "name": "wallet-pnl",
+  "name": "recon",
   "version": "0.1.0",
   "private": true,
+  "author": "Marvel <marvel.codecraft@gmail.com> (https://github.com/MarvelNwachukwu)",
+  "repository": "github.com/MarvelNwachukwu/Recon",
+  "homepage": "https://recon.marvellousnwachukwu.com",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
